@@ -8,6 +8,10 @@ const { Member } = db;
 
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.send('URL should contain /api/..');
+});
+
 app.get('/api/members', async (req, res) => {
   const { team } = req.query;
   if (team) {
@@ -22,7 +26,6 @@ app.get('/api/members', async (req, res) => {
 app.get('/api/members/:id', async (req, res) => {
   const { id } = req.params;
   const member = await Member.findOne({where: {id}});
-  // const member = members.find((m) => m.id === Number(id));
   if (member) {
     res.send(member);
   } else {
@@ -36,17 +39,6 @@ app.post('/api/members', async (req, res) => {
   await member.save();
   res.send(newMember);
 });
-
-// app.put('/api/members/:id', async (req, res) => {
-//   const { id } = req.params;
-//   const newInfo = req.body;
-//   const result = await Member.update(newInfo, {where: {id}});
-//   if (result[0]) {
-//     res.send({message: `${result[0]} row(s) affectectd`});
-//   } else {
-//     res.status(404).send({message: `There is no member with the id!`});
-//   }
-// });
 
 app.put('/api/members/:id', async (req, res) => {
   const {id} = req.params;
